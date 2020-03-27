@@ -17,3 +17,6 @@ For more information about FHIR and the Terminology Service consult the official
 ## SNOMED CT
 SNOMED Clinical Terms (CT) is a structured clinical vocabulary created to standardise the contents in electronic health record systems (EHR). It is considered the most comprehensive and precise clinical health terminology product in the world. https://digital.nhs.uk/services/terminology-and-classifications/snomed-ct
 The development and maintainance is provided by SNOMED International. https://www.snomed.org/
+
+### NHS Digital SNOMED CT browser
+A beatiful implementation of a SNOMED CT browser can be found at https://termbrowser.nhs.uk/. It allows the user to explore the hierarchy of the code system and see relations with ICD-10 and OPCS-4 codes. It has similarities with what is intended from our terminology browser in that it allows the navigation between concepts. The main difference is probably the possibility we aim to group several concepts and exporting them for future processing (e.g. for a data request to an external database), or linking it in private deployments with a patient's database (e.g. find individuals following target procedures).
