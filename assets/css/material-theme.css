@@ -1,0 +1,602 @@
+/*!
+ * Stylesheet file to customise styles for MaterializeCSS v1.0.0-rc.1 (http://materializecss.com)
+ *
+ * Biomedical Research Center - Clinical Research and Informatics Unit
+ * University College London Hospital
+ * 2020
+ */
+
+a {
+    color: rgb(0, 147, 208) /*UCLH COOL BLUE*/;
+}
+
+blockquote {
+    border-left: 5px solid rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+button:focus {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+html {
+    color: #212121;
+}
+
+label {
+    color: #595959;
+}
+
+nav {
+    color: #fff;
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+nav.topbar .brand-logo {
+    font-size: 2.5rem;
+    font-weight: 100;
+    text-overflow: ellipsis;
+    top: 5px;
+    white-space: nowrap;
+}
+
+span.badge.new {
+    color: #fff;
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.materialize-red.lighten-2 {
+    background-color: #e57373 !important;
+}
+
+.materialize-red-text.text-lighten-2 {
+    color: #e57373 !important;
+}
+
+.pagination li.active {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.page-footer {
+    background-color: rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.collection .collection-item.active {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    color: #fff;
+}
+
+.collection a.collection-item {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.secondary-content {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.progress {
+    background-color: rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.progress .determinate {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.progress .indeterminate {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+    color: rgb(248, 151, 29) /*UCLH WARM ORANGE*/;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
+    color: rgba(248, 151, 29, 0.8) /*UCLH WARM ORANGE:80%*/;
+}
+
+.row {
+    margin-bottom: 0;
+}
+
+.toast .toast-action {
+    color: rgb(255, 242, 0) /*UCLH WARM YELLOW*/;
+}
+
+.tabs {
+    min-height: 48px;
+    height: auto;
+    display: flex;
+    flex-flow: wrap;
+}
+
+.tabs .tab {
+    flex-grow: 1;
+}
+
+.tabs .tab a {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    transition: 0.3s ease;
+}
+
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+    background: rgba(0, 175, 219, 0.1) /*UCLH COOL LIGHT BLUE 10%*/;
+}
+
+.tabs .tab.disabled a:focus, .tabs .tab.disabled a:focus.active {
+    background: transparent;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.tabs .tab:not(.disabled) a:not(.active):hover {
+    background: #F2F2F2;
+}
+
+.tabs .tab.disabled a,
+.tabs .tab.disabled a:hover {
+    color: rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.tabs .indicator {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.btn:focus, .btn-large:focus, .btn-small:focus,
+.btn-floating:focus {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.btn, .btn-large, .btn-small {
+    color: #fff;
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.btn.btn-flat {
+    color: #343434;
+    background-color: transparent;
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+    background-color: rgb(0, 83, 94) /*UCLH MUTED DARK JADE*/;
+}
+
+.btn-floating {
+    color: #fff;
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.btn-floating:hover {
+    background-color: rgb(0, 83, 94) /*UCLH MUTED DARK JADE*/;
+}
+
+.fixed-action-btn .fab-backdrop {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.dropdown-content li {
+    color: #212121;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.chip:focus {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    color: #fff;
+}
+
+.chips.focus {
+    border-bottom: 1px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+  -webkit-box-shadow: 0 1px 0 0 rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+          box-shadow: 0 1px 0 0 rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.collapsible .collapsible-header {
+    user-select: none;
+}
+
+.input-field:not(:focus) > label.active {
+    color: #595959;
+}
+
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+  -webkit-box-shadow: 0 1px 0 0 rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+          box-shadow: 0 1px 0 0 rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type=password]:not(.browser-default):focus:not([readonly]) + label,
+input[type=email]:not(.browser-default):focus:not([readonly]) + label,
+input[type=url]:not(.browser-default):focus:not([readonly]) + label,
+input[type=time]:not(.browser-default):focus:not([readonly]) + label,
+input[type=date]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label,
+input[type=tel]:not(.browser-default):focus:not([readonly]) + label,
+input[type=number]:not(.browser-default):focus:not([readonly]) + label,
+input[type=search]:not(.browser-default):focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+input:not([type]):focus.valid ~ label,
+input[type=text]:not(.browser-default):focus.valid ~ label,
+input[type=password]:not(.browser-default):focus.valid ~ label,
+input[type=email]:not(.browser-default):focus.valid ~ label,
+input[type=url]:not(.browser-default):focus.valid ~ label,
+input[type=time]:not(.browser-default):focus.valid ~ label,
+input[type=date]:not(.browser-default):focus.valid ~ label,
+input[type=datetime]:not(.browser-default):focus.valid ~ label,
+input[type=datetime-local]:not(.browser-default):focus.valid ~ label,
+input[type=tel]:not(.browser-default):focus.valid ~ label,
+input[type=number]:not(.browser-default):focus.valid ~ label,
+input[type=search]:not(.browser-default):focus.valid ~ label,
+textarea.materialize-textarea:focus.valid ~ label {
+    color: rgb(0, 169, 79) /*UCLH COOL GREEN*/;
+}
+
+input:not([type]):focus.invalid ~ label,
+input[type=text]:not(.browser-default):focus.invalid ~ label,
+input[type=password]:not(.browser-default):focus.invalid ~ label,
+input[type=email]:not(.browser-default):focus.invalid ~ label,
+input[type=url]:not(.browser-default):focus.invalid ~ label,
+input[type=time]:not(.browser-default):focus.invalid ~ label,
+input[type=date]:not(.browser-default):focus.invalid ~ label,
+input[type=datetime]:not(.browser-default):focus.invalid ~ label,
+input[type=datetime-local]:not(.browser-default):focus.invalid ~ label,
+input[type=tel]:not(.browser-default):focus.invalid ~ label,
+input[type=number]:not(.browser-default):focus.invalid ~ label,
+input[type=search]:not(.browser-default):focus.invalid ~ label,
+textarea.materialize-textarea:focus.invalid ~ label {
+    color: rgb(238, 49, 36) /*UCLH WARM RED*/;
+}
+
+/* Validation Sass Placeholders */
+input.valid:not([type]), input.valid:not([type]):focus,
+input[type=text].valid:not(.browser-default),
+input[type=text].valid:not(.browser-default):focus,
+input[type=password].valid:not(.browser-default),
+input[type=password].valid:not(.browser-default):focus,
+input[type=email].valid:not(.browser-default),
+input[type=email].valid:not(.browser-default):focus,
+input[type=url].valid:not(.browser-default),
+input[type=url].valid:not(.browser-default):focus,
+input[type=time].valid:not(.browser-default),
+input[type=time].valid:not(.browser-default):focus,
+input[type=date].valid:not(.browser-default),
+input[type=date].valid:not(.browser-default):focus,
+input[type=datetime].valid:not(.browser-default),
+input[type=datetime].valid:not(.browser-default):focus,
+input[type=datetime-local].valid:not(.browser-default),
+input[type=datetime-local].valid:not(.browser-default):focus,
+input[type=tel].valid:not(.browser-default),
+input[type=tel].valid:not(.browser-default):focus,
+input[type=number].valid:not(.browser-default),
+input[type=number].valid:not(.browser-default):focus,
+input[type=search].valid:not(.browser-default),
+input[type=search].valid:not(.browser-default):focus,
+textarea.materialize-textarea.valid,
+textarea.materialize-textarea.valid:focus, .select-wrapper.valid >
+input.select-dropdown {
+    border-bottom: 1px solid rgb(0, 169, 79) /*UCLH COOL GREEN*/;
+  -webkit-box-shadow: 0 1px 0 0 rgb(0, 169, 79) /*UCLH COOL GREEN*/;
+          box-shadow: 0 1px 0 0 rgb(0, 169, 79) /*UCLH COOL GREEN*/;
+}
+
+input.invalid:not([type]), input.invalid:not([type]):focus,
+input[type=text].invalid:not(.browser-default),
+input[type=text].invalid:not(.browser-default):focus,
+input[type=password].invalid:not(.browser-default),
+input[type=password].invalid:not(.browser-default):focus,
+input[type=email].invalid:not(.browser-default),
+input[type=email].invalid:not(.browser-default):focus,
+input[type=url].invalid:not(.browser-default),
+input[type=url].invalid:not(.browser-default):focus,
+input[type=time].invalid:not(.browser-default),
+input[type=time].invalid:not(.browser-default):focus,
+input[type=date].invalid:not(.browser-default),
+input[type=date].invalid:not(.browser-default):focus,
+input[type=datetime].invalid:not(.browser-default),
+input[type=datetime].invalid:not(.browser-default):focus,
+input[type=datetime-local].invalid:not(.browser-default),
+input[type=datetime-local].invalid:not(.browser-default):focus,
+input[type=tel].invalid:not(.browser-default),
+input[type=tel].invalid:not(.browser-default):focus,
+input[type=number].invalid:not(.browser-default),
+input[type=number].invalid:not(.browser-default):focus,
+input[type=search].invalid:not(.browser-default),
+input[type=search].invalid:not(.browser-default):focus,
+textarea.materialize-textarea.invalid,
+textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid >
+input.select-dropdown,
+.select-wrapper.invalid > input.select-dropdown:focus {
+    border-bottom: 1px solid rgb(238, 49, 36) /*UCLH WARM RED*/;
+  -webkit-box-shadow: 0 1px 0 0 rgb(238, 49, 36) /*UCLH WARM RED*/;
+          box-shadow: 0 1px 0 0 rgb(238, 49, 36) /*UCLH WARM RED*/;
+}
+
+input:not([type]).valid ~ .helper-text:after,
+input:not([type]):focus.valid ~ .helper-text:after,
+input[type=text]:not(.browser-default).valid ~ .helper-text:after,
+input[type=text]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=password]:not(.browser-default).valid ~ .helper-text:after,
+input[type=password]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=email]:not(.browser-default).valid ~ .helper-text:after,
+input[type=email]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=url]:not(.browser-default).valid ~ .helper-text:after,
+input[type=url]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=time]:not(.browser-default).valid ~ .helper-text:after,
+input[type=time]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=date]:not(.browser-default).valid ~ .helper-text:after,
+input[type=date]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=datetime]:not(.browser-default).valid ~ .helper-text:after,
+input[type=datetime]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=datetime-local]:not(.browser-default).valid ~ .helper-text:after,
+input[type=datetime-local]:not(.browser-default):focus.valid ~
+.helper-text:after,
+input[type=tel]:not(.browser-default).valid ~ .helper-text:after,
+input[type=tel]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=number]:not(.browser-default).valid ~ .helper-text:after,
+input[type=number]:not(.browser-default):focus.valid ~ .helper-text:after,
+input[type=search]:not(.browser-default).valid ~ .helper-text:after,
+input[type=search]:not(.browser-default):focus.valid ~ .helper-text:after,
+textarea.materialize-textarea.valid ~ .helper-text:after,
+textarea.materialize-textarea:focus.valid ~ .helper-text:after,
+.select-wrapper.valid ~ .helper-text:after {
+    color: rgb(0, 169, 79) /*UCLH COOL GREEN*/;
+}
+
+input:not([type]).invalid ~ .helper-text:after,
+input:not([type]):focus.invalid ~ .helper-text:after,
+input[type=text]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=text]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=password]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=password]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=email]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=email]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=url]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=url]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=time]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=time]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=date]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=date]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=datetime]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=datetime]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=datetime-local]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=datetime-local]:not(.browser-default):focus.invalid ~
+.helper-text:after,
+input[type=tel]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=tel]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=number]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=number]:not(.browser-default):focus.invalid ~ .helper-text:after,
+input[type=search]:not(.browser-default).invalid ~ .helper-text:after,
+input[type=search]:not(.browser-default):focus.invalid ~ .helper-text:after,
+textarea.materialize-textarea.invalid ~ .helper-text:after,
+textarea.materialize-textarea:focus.invalid ~ .helper-text:after,
+.select-wrapper.invalid ~ .helper-text:after {
+    color: rgb(238, 49, 36) /*UCLH WARM RED*/;
+}
+
+.input-field .prefix.active {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:before,
+[type="radio"].with-gap:checked + span:after {
+    border: 2px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+[type="checkbox"]:checked + span:not(.lever):before {
+    border-right: 2px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    border-bottom: 2px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+/* Indeterminate checkbox */
+[type="checkbox"]:indeterminate + span:not(.lever):before {
+    border-right: 2px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+[type="checkbox"].filled-in:checked + span:not(.lever):after {
+    border: 2px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+[type="checkbox"].filled-in.tabbed:checked:focus + span:not(.lever):after {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    border-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.switch label input[type=checkbox]:checked + .lever {
+    background-color: rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.switch label input[type=checkbox]:checked + .lever:after {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.switch label .lever:before {
+    background-color: rgba(0, 83, 94, 0.1) /*UCLH MUTED DARK JADE:10%*/;
+}
+
+input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before,
+input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
+  -webkit-transform: scale(2.4);
+          transform: scale(2.4);
+    background-color: rgba(0, 83, 94, 0.1) /*UCLH MUTED DARK JADE:10%*/;
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.select-wrapper .caret {
+    fill: #212121;
+}
+
+input[type=range] + .thumb {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+input[type=range] + .thumb .value {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    background: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+input[type=range]::-moz-range-thumb {
+    background: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+input[type=range]::-ms-thumb {
+    background: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.table-of-contents a:hover {
+    color: #a8a8a8;
+    border-left: 1px solid rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.table-of-contents a.active {
+    border-left: 2px solid rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.sidenav li > a {
+    color: #212121;
+}
+
+.sidenav li > a.btn:hover, .sidenav li > a.btn-large:hover, .sidenav li >
+a.btn-small:hover, .sidenav li > a.btn-large:hover {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.sidenav li > a.btn-floating:hover {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.sidenav .collapsible-body > ul:not(.collapsible) > li.active,
+.sidenav.sidenav-fixed .collapsible-body > ul:not(.collapsible) > li.active {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.spinner-layer {
+    border-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.slider .indicators .indicator-item.active {
+    background-color: rgb(0, 169, 79) /*UCLH COOL GREEN*/;
+}
+
+.tap-target {
+    background-color: rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+/* Date Display */
+.datepicker-date-display {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    color: #fff;
+}
+
+.datepicker-table td.is-today {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.datepicker-table td.is-selected {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+    color: #fff;
+}
+
+.datepicker-day-button:focus {
+    background-color: rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.datepicker-controls .select-month,
+.datepicker-controls .select-year,
+.datepicker-controls button {
+    transition: 0.3s ease-out;
+    border-radius: 2px;
+}
+
+.datepicker-controls .select-month:hover,
+.datepicker-controls .select-year:hover,
+.datepicker-controls button:hover {
+    background-color: #E1E1E1;
+}
+
+.datepicker-controls .select-month input {
+    width: 80px;
+}
+
+.datepicker-controls button:focus {
+    background-color: #E1E1E1;
+}
+
+/* Footer */
+.datepicker-cancel,
+.datepicker-clear,
+.datepicker-today,
+.datepicker-done {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.datepicker-clear {
+    color: rgb(238, 49, 36) /*UCLH WARM RED*/;
+}
+
+/* Clock Digital Display */
+.timepicker-digital-display {
+    background-color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.timepicker-tick {
+    color: #212121;
+}
+
+.timepicker-tick.active,
+.timepicker-tick:hover {
+    background-color: rgb(172, 220, 212) /*SECONDARY:UCLH PALE JADE*/;
+}
+
+.timepicker-canvas line {
+    stroke: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.timepicker-canvas-bearing {
+    fill: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+.timepicker-canvas-bg {
+    fill: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
+
+/* Footer */
+.timepicker-clear {
+    color: rgb(238, 49, 36) /*UCLH WARM RED*/;
+}
+
+.timepicker-close {
+    color: rgb(0, 123, 133) /*PRIMARY:UCLH JADE GREEN*/;
+}
