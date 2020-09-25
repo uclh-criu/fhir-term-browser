@@ -8,18 +8,18 @@
 
   <title>FHIR Terminology Browser</title>
 
-  <link rel="icon" href="assets/img/favicon/touch-icon-iphone.png" />
-  <link rel="apple-touch-icon" href="assets/img/favicon/touch-icon-iphone.png" />
-  <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon/touch-icon-ipad.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon/touch-icon-iphone-retina.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon/touch-icon-ipad-retina.png" />
+  <link rel="icon" href="src/img/favicon/touch-icon-iphone.png" />
+  <link rel="apple-touch-icon" href="src/img/favicon/touch-icon-iphone.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="src/img/favicon/touch-icon-ipad.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="src/img/favicon/touch-icon-iphone-retina.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="src/img/favicon/touch-icon-ipad-retina.png" />
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="assets/materialize-v1.0.0/materialize.css" rel="stylesheet">
-  <link href="assets/css/material-theme.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/main.css" />
+  <link href="src/materialize-v1.0.0/materialize.css" rel="stylesheet">
+  <link href="src/css/material-theme.css" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/main.css" />
 
-  <script src="assets/jquery-v3.4.1/jquery-3.4.1.min.js"></script>
+  <script src="src/jquery-v3.4.1/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
@@ -31,18 +31,89 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="min-height: 400px;">
       <!--  MAIN CONTENT STARTS HERE  -->
 
-      <div style="min-height: 400px;">
-        <pre id="error-container" class="left-align uclh-secondary" style="white-space: pre-wrap; display: none;"></pre>
-        <h3 class="center orange-text">Select code system</h3>
+      <pre id="error-container" class="left-align uclh-warm-red-text"></pre>
+
+      <!-- Code Systems -->
+      <div id="code-systems-container">
+        <h3 class="center orange-text">Code systems</h3>
         <div class="input-field">
           <i id="code-systems-loading" class="material-icons prefix">autorenew</i>
-          <input id="code-systems-search" type="text">
+          <input id="code-systems-search" type="text" autofocus>
           <label for="code-systems-search">Search...</label>
+          <div class="helper-text"></div>
         </div>
-        <div id="code-systems" class="collection" style="display: none;"></div>
+        <div id="code-systems-results" class="collection" style="display: none;"></div>
+      </div>
+
+      <!-- Value Sets -->
+      <div id="value-sets-container">
+        <br>
+        <h3 class="center orange-text">Value sets</h3>
+        <div class="input-field">
+          <i id="value-sets-loading" class="material-icons prefix">autorenew</i>
+          <input id="value-sets-search" type="text" value="http://snomed.info/sct/83821000000107/version/20200415?fhir_vs">
+          <label for="value-sets-search">Search...</label>
+          <div class="helper-text"></div>
+        </div>
+        <div id="value-sets-results" class="collection" style="display: none;"></div>
+      </div>
+
+      <!-- Concepts search with basic filter -->
+      <div id="concepts-container">
+        <br>
+        <h3 class="center orange-text">Concepts</h3>
+        <div class="input-field">
+          <i id="concepts-loading" class="material-icons prefix">autorenew</i>
+          <input id="concepts-search" type="text">
+          <label for="concepts-search">Search...</label>
+          <div class="helper-text"></div>
+        </div>
+        <div id="concepts-results" class="collection" style="display: none;"></div>
+      </div>
+
+      <!-- Concepts search with advanced SNOMED CT ECL -->
+      <div id="ecl-filters-container">
+        <br>
+        <h3 class="center orange-text">Concepts via ECL</h3>
+        <div class="input-field">
+          <i id="ecl-filters-loading" class="material-icons prefix">autorenew</i>
+          <input id="ecl-filters-search" type="text">
+          <label for="ecl-filters-search">ECL filter</label>
+          <div class="helper-text">
+            <a href="https://confluence.ihtsdotools.org/display/DOCECL/Expression+Constraint+Language+-+Specification+and+Guide" target="_blank">SNOMED CT - Expression Constraint Language</a>
+          </div>
+        </div>
+        <div class="ecl-filter-wrappers">
+          <div class="ecl-filter-wrapper">
+            <div class="input-field">
+              <select class="ecl-filter-operator">
+                <option value="<" data-long-value="descendantOf" title="Descendants (subtypes), both direct children and transitive subtypes.">Descendant of</option>
+                <option value="<<" data-long-value="descendantOrSelfOf" title="Descendants plus the concept itself">Descendant or Self of</option>
+                <option value="<!" data-long-value="childOf" title="Proximal children (|is a| relationship whose target is the given concept)">Child of</option>
+                <option value="<<!" data-long-value="childOrSelfOf" title="Proximal children plus the concept itself">Child or Self of</option>
+                <option value=">" data-long-value="ancestorOf" title="Ancestors (supertypes), both direct parents and transitive supertypes">Ancestor of</option>
+                <option value=">>" data-long-value="ancestorOrSelfOf" title="Ancestors plus the concept itself">Ancestor or Self of</option>
+                <option value=">!" data-long-value="parentOf" title="Proximal parents (|is a| relationship whose source is the given concept)">Parent of</option>
+                <option value=">>!" data-long-value="parentOrSelfOf" title="Proximal parents plus the concept itself">Parent or Self of</option>
+                <option value="^" data-long-value="memberOf" title="Concepts that are referenced by the given reference set (applies only to reference sets whose components are concepts)">Member of</option>
+                <option value="*" data-long-value="ANY" title="All concepts in the given substrate">Any</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <input class="ecl-filter-code" type="number" placeholder="Code" value="55342001">
+            </div>
+            <div class="input-field">
+              <input class="ecl-filter-label" type="text" placeholder="Label" value="Neoplastic disease">
+            </div>
+            <div class="input-field">
+              <button class="ecl-filter-add btn white uclh-primary-text">+</button>
+            </div>
+          </div>
+        </div>
+        <div id="ecl-filters-results" class="collection" style="display: none;"></div>
       </div>
 
       <!--  MAIN CONTENT ENDS HERE  -->
@@ -50,9 +121,9 @@
   </main>
   <footer></footer>
 
-  <script src="assets/materialize-v1.0.0/materialize.js"></script>
-  <script src="assets/js/init.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="src/materialize-v1.0.0/materialize.js"></script>
+  <script src="src/js/init.js"></script>
+  <script src="src/js/main.js"></script>
 </body>
 
 </html>
