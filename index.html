@@ -27,7 +27,7 @@
   <main>
     <nav role="navigation">
       <div class="nav-wrapper container">
-        <a href="#" class="brand-logo">Terminology Browser</a>
+        <div class="brand-logo">FHIR Terminology Browser</div>
       </div>
     </nav>
 
@@ -39,45 +39,63 @@
       <!-- Code Systems -->
       <div id="code-systems-container">
         <h3 class="center orange-text">Code systems</h3>
+        <p>
+          Write the name, part of the description or URL of the Code System and hit [Enter]
+          to search the server. Then click on a result to select it as Value Set.
+        </p>
         <div class="input-field">
           <i id="code-systems-loading" class="material-icons prefix">autorenew</i>
           <input id="code-systems-search" type="text" autofocus>
           <label for="code-systems-search">Search...</label>
           <div class="helper-text"></div>
         </div>
-        <div id="code-systems-results" class="collection" style="display: none;"></div>
+        <div id="code-systems-results" class="clickable-results" style="display: none;"></div>
       </div>
 
       <!-- Value Sets -->
       <div id="value-sets-container">
         <br>
         <h3 class="center orange-text">Value sets</h3>
+        <p>
+          Write the name, part of the description or URL of the Value Set and hit [Enter]
+          to search the server. Then click on a result to select it as Value Set.
+        </p>
         <div class="input-field">
           <i id="value-sets-loading" class="material-icons prefix">autorenew</i>
           <input id="value-sets-search" type="text" value="http://snomed.info/sct/83821000000107/version/20200415?fhir_vs">
           <label for="value-sets-search">Search...</label>
           <div class="helper-text"></div>
         </div>
-        <div id="value-sets-results" class="collection" style="display: none;"></div>
+        <div id="value-sets-results" class="clickable-results" style="display: none;"></div>
       </div>
 
       <!-- Concepts search with basic filter -->
       <div id="concepts-container">
         <br>
         <h3 class="center orange-text">Concepts</h3>
+        <p>
+          Write an approximate name for the Concept and hit [Enter] to search the server.
+          Only Concepts included in the current Value Set will be returned.
+          To manually change the Value Set, write it's URL in the field above.
+        </p>
         <div class="input-field">
           <i id="concepts-loading" class="material-icons prefix">autorenew</i>
           <input id="concepts-search" type="text">
           <label for="concepts-search">Search...</label>
           <div class="helper-text"></div>
         </div>
-        <div id="concepts-results" class="collection" style="display: none;"></div>
+        <div id="concepts-results" class="paged-results" style="display: none;"></div>
       </div>
 
       <!-- Concepts search with advanced SNOMED CT ECL -->
       <div id="ecl-filters-container">
         <br>
-        <h3 class="center orange-text">Concepts via ECL</h3>
+        <h3 id="ecl-filters-title" class="center orange-text">Concepts via ECL</h3>
+        <p>
+          Write a correct ECL and hit [Enter] to search the server, or use the fields below.
+          Only Concepts included in the current Value Set will be returned.
+          To manually change the Value Set, write it's URL in the field above.
+        </p>
         <div class="input-field">
           <i id="ecl-filters-loading" class="material-icons prefix">autorenew</i>
           <input id="ecl-filters-search" type="text">
@@ -99,6 +117,7 @@
                 <option value=">!" data-long-value="parentOf" title="Proximal parents (|is a| relationship whose source is the given concept)">Parent of</option>
                 <option value=">>!" data-long-value="parentOrSelfOf" title="Proximal parents plus the concept itself">Parent or Self of</option>
                 <option value="^" data-long-value="memberOf" title="Concepts that are referenced by the given reference set (applies only to reference sets whose components are concepts)">Member of</option>
+                <option value="" data-long-value="Self" title="The concept exactly matching the given code">Self</option>
                 <option value="*" data-long-value="ANY" title="All concepts in the given substrate">Any</option>
               </select>
             </div>
@@ -113,7 +132,7 @@
             </div>
           </div>
         </div>
-        <div id="ecl-filters-results" class="collection" style="display: none;"></div>
+        <div id="ecl-filters-results" class="paged-results" style="display: none;"></div>
       </div>
 
       <!--  MAIN CONTENT ENDS HERE  -->

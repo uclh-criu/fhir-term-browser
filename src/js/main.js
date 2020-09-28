@@ -13,6 +13,14 @@ const context = {
     codeSystem: null,
     valueSet: null,
     concept: null,
+    conceptSearch: {
+        count: 100,
+        offset: 0
+    },
+    eclSearch: {
+        count: 100,
+        offset: 0
+    }
 };
 
 /**
@@ -20,7 +28,7 @@ const context = {
  *
  * @param operation
  * @param params
- * @returns {Promise<unknown>}
+ * @returns {Promise}
  */
  function query(operation, params) {
     return new Promise((resolve, reject) => {
@@ -51,11 +59,11 @@ const context = {
  *
  * @param operation
  * @param params
- * @returns {Promise|Promise<unknown>}
+ * @returns {Promise}
  */
 function queryFHIRResource(operation, params) {
      return query(operation, params).then((response) => {
-         return response.entry || [];
+         return { results: response.entry || [] };
      });
 }
 
@@ -73,6 +81,7 @@ function queryFHIRResource(operation, params) {
  * result is an object containing an attribute `entry`.
  *
  * @param queriesArguments: List of pairs [operation, params] for each individual query.
+ * @returns {Promise}
  */
 function mergedFHIRResourceQueries(queriesArguments) {
     return new Promise((resolve, reject) => {
@@ -89,12 +98,12 @@ function mergedFHIRResourceQueries(queriesArguments) {
         // at which point it resolves the promise and returns.
         const processResults = function () {
             if (queries.length <= 0) {
-                resolve(uniqueResults);
+                resolve({ results: uniqueResults });
             }
             else {
                 const lastQuery = queries.pop();
-                lastQuery.then((results) => {
-                    results.forEach((item) => {
+                lastQuery.then((response) => {
+                    response.results.forEach((item) => {
                         if (! uniqueIds.includes(item.resource.id)) {
                             uniqueIds.push(item.resource.id);
                             uniqueResults.push(item);
@@ -117,8 +126,9 @@ function mergedFHIRResourceQueries(queriesArguments) {
  * @param field: A text field that can be written on.
  * @param callback: A function that receives as parameters a unique token identifying
  * the latest event (to avoid processing old queries) and the trigger field.
+ * @param minLength: Minimal length the field bust have to trigger a query. Default is 2.
  */
-function subscribe(field, callback) {
+function subscribe(field, callback, minLength) {
     // Search while writing in the field
     // https://stackoverflow.com/a/14042239
     // Chrome Fix (Use keyup over keypress to detect backspace)
@@ -133,10 +143,10 @@ function subscribe(field, callback) {
     //         callback(token, field);
     //     }, 400);
     // });
-
+    if (minLength === undefined) { minLength = 2; }
     field.on("change keypress", (evt) => {
         if (evt.type === "keypress" && evt.keyCode !== 13) { return; }
-        if (evt.target.value.trim().length < 2) { return; }
+        if (evt.target.value.trim().length < minLength) { return; }
         const token = + new Date();
         context.latestSearchToken = token;
         callback(token, $(evt.target));
@@ -160,6 +170,61 @@ function setVal(field, value) {
 
 
 /**
+ * Generates and returns DOM element to display pages.
+ *
+ * @param current
+ * @param total
+ * @param pageCallback
+ * @returns {*|jQuery.fn.init|jQuery|HTMLElement}
+ */
+function getPagination(current, total, pageCallback) {
+    const pages = [];
+    const container = $("<ul class='pagination'></ul>")
+    const prev = $("<li><a href='#!'><i class='material-icons'>chevron_left</i></a></li>");
+    const next = $("<li><a href='#!'><i class='material-icons'>chevron_right</i></a></li>");
+    for (let i = 1; i <= total; i++) {
+        const page = $(`<li><a href='#!'>${i}</a></li>`).click((evt) => {
+            evt.preventDefault();
+            $(evt.target).parent("li").addClass("active disabled")
+                .parent("ul.pagination").find(".active").removeClass("active disabled");
+            pageCallback(i);
+        });
+        pages.push(page);
+        container.append(page);
+    }
+    container.prepend(prev);
+    container.append(next);
+
+    pages[current - 1].addClass("active disabled");
+    pages[current - 1].click((evt) => { evt.preventDefault(); });
+
+    if (current === 1) {
+        prev.addClass("disabled");
+        prev.click((evt) => { evt.preventDefault(); });
+    }
+    else {
+        prev.click((evt) => {
+            evt.preventDefault();
+            $(evt.target).parents("ul.pagination").find(`li:nth-child(${current})`).click();
+        });
+    }
+
+    if (current === total) {
+        next.addClass("disabled");
+        next.click((evt) => { evt.preventDefault(); });
+    }
+    else {
+        next.click((evt) => {
+            evt.preventDefault();
+            $(evt.target).parents("ul.pagination").find(`li:nth-child(${current + 2})`).click();
+        });
+    }
+
+    return container;
+}
+
+
+/**
  * Generic function to handle results of a search when the linked field value changes.
  *
  * @param searchToken
@@ -169,10 +234,12 @@ function setVal(field, value) {
  * @param apiQueryBuilder
  * @param resultItemBuilder
  * @param onSelectItem
+ * @param onPageChange
  */
 function handleSearchField(searchToken, field, resultsContainer, loadingIcon,
                            apiQueryBuilder,
-                           resultItemBuilder, onSelectItem) {
+                           resultItemBuilder, onSelectItem,
+                           onPageChange) {
     const searchValue = field.val();
     const targetError = $("#error-container");
 
@@ -180,32 +247,53 @@ function handleSearchField(searchToken, field, resultsContainer, loadingIcon,
     loadingIcon.removeClass("paused");
 
     apiQueryBuilder(searchValue).then(
-        (results) => {
+        (response) => {
             if (context.latestSearchToken !== searchToken) { return; }
 
-            console.debug(results);
+            console.debug(response);
+            const results = response.results;
             targetError.hide(200);
             if (results.length > 0) {
                 resultsContainer.html("");
+
+                // Display page information (if given)
+                if (response.offset !== undefined) {
+                    let pageInfo = `Results ${response.offset + 1} to ${response.offset + results.length}`;
+                    if (response.total !== undefined) {
+                        pageInfo += ` of ${response.total}`;
+                    }
+                    resultsContainer.append($("<div></div>").addClass("page-info")).append(
+                        pageInfo,
+                        getPagination(
+                            Math.ceil(response.offset / response.pageSize) + 1,
+                            Math.ceil(response.total / response.pageSize),
+                            onPageChange
+                        )
+                    );
+                }
+
+                const itemsWrapper = $("<div></div>").addClass("collection");
                 results.forEach((item) => {
                     const itemDOM = resultItemBuilder(item);
                     itemDOM.data(item);
-                    resultsContainer.append(itemDOM);
+                    itemsWrapper.append(itemDOM);
                 });
-                resultsContainer.find(".clickable").click((evt) => onSelectItem($(evt.currentTarget).data()));
-                resultsContainer.show(0);
+                itemsWrapper.find(".clickable").click((evt) => onSelectItem($(evt.currentTarget).data()));
+                resultsContainer.append(itemsWrapper);
             }
             else {
-                resultsContainer.hide(0);
+                resultsContainer.html($("<div>No results</div>").addClass("center-align"));
             }
+            resultsContainer.show(0);
             loadingIcon.addClass("paused");
         },
         (error) => {
-            loadingIcon.addClass("paused");
             console.error(error);
+            loadingIcon.addClass("paused");
+            resultsContainer.html("Error. Please check the console or the error box at the top of the page.");
+            resultsContainer.show();
             try {
                 const jsonError = JSON.parse(error.message);
-                console.debug(jsonError);
                 targetError.html(JSON.stringify(jsonError, null, 2));
             }
             catch {
@@ -223,7 +311,7 @@ function handleSearchField(searchToken, field, resultsContainer, loadingIcon,
  */
 function handleCodeSystem() {
     subscribe($("#code-systems-search"), (searchToken, field) => {
-        return handleSearchField(
+        handleSearchField(
             searchToken,
             field,
             $("#code-systems-results"),
@@ -286,7 +374,7 @@ function handleCodeSystem() {
  */
 function handleValueSet() {
     subscribe($("#value-sets-search"), (searchToken, field) => {
-        return handleSearchField(
+        handleSearchField(
             searchToken,
             field,
             $("#value-sets-results"),
@@ -340,8 +428,15 @@ function handleValueSet() {
  *
  */
 function handleConcept() {
-    subscribe($("#concepts-search"), (searchToken, field) => {
-        return handleSearchField(
+    /**
+     * Executes the logic for a new query, to be called when the search field
+     * changes or a different page is requested.
+     *
+     * @param searchToken
+     * @param field
+     */
+    const search = function(searchToken, field) {
+        handleSearchField(
             searchToken,
             field,
             $("#concepts-results"),
@@ -349,14 +444,18 @@ function handleConcept() {
             (value) => {
                 return query("ValueSet/$expand",{
                     // "url": context.valueSet.resource.url,
-                    "url": $("#value-sets-search").val(),
-                    "filter": value,
-                    "offset": 0,
-                    "count": 100,
-                    "activeOnly": true
+                    url: $("#value-sets-search").val(),
+                    filter: value,
+                    offset: context.conceptSearch.offset,
+                    count: context.conceptSearch.count,
+                    activeOnly: context.conceptSearch.activeOnly
                 }).then((response) => {
-                    console.log(response);
-                    return response.expansion.contains || [];
+                    return {
+                        results: response.expansion.contains || [],
+                        offset: response.expansion.offset,
+                        pageSize: context.conceptSearch.count,
+                        total: response.expansion.total
+                    };
                 });
             },
             (concept) => {
@@ -382,7 +481,18 @@ function handleConcept() {
                 }
                 return conceptDOM;
             },
+            () => {/* Do nothing when a concept is clicked */},
+            (page) => {
+                // Change offset and trigger search
+                context.conceptSearch.offset = context.conceptSearch.count * (page - 1);
+                search(searchToken, field);
+            }
         );
+    };
+
+    subscribe($("#concepts-search"), (searchToken, field) => {
+        context.conceptSearch.offset = 0;
+        search(searchToken, field);
     });
 }
 
@@ -397,72 +507,15 @@ function handleECLFilter() {
     const eclSearchField = $("#ecl-filters-search");
     const eclAddBtn = $(".ecl-filter-add");
 
-    const updateSearchString = (evt) => {
-        if (evt && evt.type === "keypress" && evt.keyCode !== 13) { return; }
-
-        // Rebuild the ECL filter
-        const shortECL = [];
-        const longECL = [];
-        $(".ecl-filter-wrapper").each((index, item) => {
-            const wrapper = $(item);
-            const filter = {
-                op: wrapper.find(".ecl-filter-operator").val(),
-                opLong: wrapper.find(".ecl-filter-operator > option:selected").attr("data-long-value"),
-                code: wrapper.find(".ecl-filter-code").val(),
-                label: wrapper.find(".ecl-filter-label").val(),
-            };
-            if (filter.code) {
-                shortECL.push(`${filter.op} ${filter.code}|${filter.label}|`);
-                longECL.push(`${filter.opLong} ${filter.code}|${filter.label}|`);
-            }
-        });
-        console.debug(shortECL);
-        console.debug(longECL);
-
-        // Display long ECL
-        setVal(eclSearchField, shortECL.join(", "));
-        eclSearchField.change();
-    };
-
-    const addFilterFields = (scroll, operator, code, label) => {
-        const lastWrapper = $(".ecl-filter-wrapper:last-child");
-        const button = lastWrapper.find(".ecl-filter-add");
-        const newWrapper = $("<div class=ecl-filter-wrapper></div>")
-            .hide()
-            .append($("<div class=input-field></div>").html(lastWrapper.find(".ecl-filter-operator").clone()))
-            .append($("<div class=input-field></div>").html(lastWrapper.find(".ecl-filter-code").clone()))
-            .append($("<div class=input-field></div>").html(lastWrapper.find(".ecl-filter-label").clone()))
-            .append($("<div class=input-field></div>").html(button.clone()));
-        button.replaceWith($("<div></div>").css("width", 42));
-        newWrapper.find("input, select").on("change keypress", updateSearchString);
-        newWrapper.find(".ecl-filter-add").click(() => { addFilterFields(true); });
-
-        // Provide initial values if given
-        const select = newWrapper.find(".ecl-filter-operator");
-        if (operator) {
-            select.val(select.find(`option[data-long-value=${operator}]`)[0].value);
-        }
-        newWrapper.find(".ecl-filter-code").val(code || "");
-        newWrapper.find(".ecl-filter-label").val(label || "");
-
-        newWrapper.insertAfter(lastWrapper);
-        $("select").not(".disabled").not(".browser-default").each(function() {
-            M.FormSelect.init(this, {});
-        });
-        newWrapper.show(200);
-
-        // Scroll down
-        if (scroll) {
-            const scrollPoint = newWrapper.position().top + newWrapper.find(".input-field:first-child").height();
-            $('html,body').animate({scrollTop: scrollPoint}, 1000);
-        }
-    };
-
-    eclFields.on("change keypress", updateSearchString);
-    eclAddBtn.click(() => { addFilterFields(true); });
-
-    subscribe(eclSearchField, (searchToken, field) => {
-        return handleSearchField(
+    /**
+     * Executes the logic for a new query, to be called when the search field
+     * changes or a different page is requested.
+     *
+     * @param searchToken
+     * @param field
+     */
+    const search = function(searchToken, field) {
+        handleSearchField(
             searchToken,
             field,
             $("#ecl-filters-results"),
@@ -478,23 +531,24 @@ function handleECLFilter() {
                 url += "=ecl/" + value;
 
                 return query("ValueSet/$expand",{
-                    "url": url,
-                    "offset": 0,
-                    "count": 100,
-                    "activeOnly": true
+                    url: url,
+                    offset: context.eclSearch.offset,
+                    count: context.eclSearch.count,
+                    activeOnly: context.eclSearch.activeOnly
                 }).then((response) => {
-                    return response.expansion.contains || [];
+                    // Focus the results
+                    $('html,body').animate({scrollTop: $("#ecl-filters-title").offset().top}, 1000);
+
+                    // Return a simplified response
+                    return {
+                        results: response.expansion.contains || [],
+                        offset: response.expansion.offset,
+                        pageSize: context.eclSearch.count,
+                        total: response.expansion.total,
+                    };
                 });
             },
             (concept) => {
-                // Button to display the children of this concept
-                const childrenBtn = $("<button>Children</button>")
-                    .addClass("btn btn-small white uclh-primary-text")
-                    .click(() => {
-                        addFilterFields(false, "descendantOf", concept.code, concept.display);
-                        updateSearchString();
-                    });
-
                 // DOM elements to display the concept
                 const conceptDOM = $("<div></div>")
                     .addClass("collection-item")
@@ -511,8 +565,27 @@ function handleECLFilter() {
                                 .addClass("new badge"))
                             .addClass("ecl-concept-system"),
                         $("<div></div>")
-                            .html(childrenBtn)
-                            .addClass("ecl-concept-btn")
+                            .html($("<button>Parents</button>")
+                                .addClass("btn btn-small white uclh-primary-text")
+                                .click(() => {
+                                    setFilterFields([{
+                                        op: "parentOf",
+                                        code: concept.code,
+                                        label: concept.display
+                                    }]);
+                                }))
+                            .addClass("ecl-concept-parents-btn"),
+                        $("<div></div>")
+                            .html($("<button>Children</button>")
+                                .addClass("btn btn-small white uclh-primary-text")
+                                .click(() => {
+                                    setFilterFields([{
+                                        op: "childOf",
+                                        code: concept.code,
+                                        label: concept.display
+                                    }]);
+                                }))
+                            .addClass("ecl-concept-children-btn")
                     );
                 if (concept.inactive) {
                     conceptDOM.append(
@@ -523,8 +596,165 @@ function handleECLFilter() {
                 }
                 return conceptDOM;
             },
+            () => {/* Do nothing when a concept is clicked */},
+            (page) => {
+                // Change offset and trigger search
+                context.eclSearch.offset = context.eclSearch.count * (page - 1);
+                search(searchToken, field);
+            }
         );
-    });
+    };
+
+    /**
+     * Update the field with the search string, which will also trigger a new
+     * query to the server.
+     *
+     * @param evt
+     */
+    const updateSearchString = (evt) => {
+        if (evt && evt.type === "keypress" && evt.keyCode !== 13) { return; }
+
+        // Rebuild the ECL filter
+        const shortECL = [];
+        const longECL = [];
+        $(".ecl-filter-wrapper").each((index, item) => {
+            const wrapper = $(item);
+            const filter = {
+                op: wrapper.find(".ecl-filter-operator").val(),
+                opLong: wrapper.find(".ecl-filter-operator > option:selected").attr("data-long-value"),
+                code: wrapper.find(".ecl-filter-code").val(),
+                label: wrapper.find(".ecl-filter-label").val(),
+            };
+            // When the operator is "ANY" the other fields must be ignored
+            if (filter.opLong === "ANY") {
+                shortECL.push(filter.op);
+                longECL.push(filter.opLong);
+            }
+            else if (filter.code) {
+                if (filter.label) {
+                    shortECL.push(`${filter.op} ${filter.code}|${filter.label}|`);
+                    longECL.push(`${filter.opLong} ${filter.code}|${filter.label}|`);
+                }
+                else {
+                    shortECL.push(`${filter.op} ${filter.code}`);
+                    longECL.push(`${filter.opLong} ${filter.code}`);
+                }
+            }
+        });
+        console.debug(shortECL);
+        console.debug(longECL);
+
+        // Display long ECL
+        setVal(eclSearchField, shortECL.join(", "));
+        eclSearchField.change();
+    };
+
+    /**
+     * Append a new set of fields to further filter the concepts.
+     *
+     * @param operator
+     * @param code
+     * @param label
+     */
+    const addFilterFields = (operator, code, label) => {
+        const lastWrapper = $(".ecl-filter-wrapper:last-child");
+        const button = lastWrapper.find(".ecl-filter-add");
+        const newWrapper = $("<div class=ecl-filter-wrapper></div>").append(
+            $("<div class=input-field></div>").html(lastWrapper.find(".ecl-filter-operator").clone()),
+            $("<div class=input-field></div>").html(lastWrapper.find(".ecl-filter-code").clone()),
+            $("<div class=input-field></div>").html(lastWrapper.find(".ecl-filter-label").clone()),
+            $("<div class=input-field></div>").append(
+                button.clone()
+                    .html("-")
+                    .removeClass()
+                    .addClass("btn white uclh-warm-red-text ecl-filter-remove")
+                    .click(removeFilterFields),
+                button.clone()
+                    .click(() => { addFilterFields(); })
+            )
+        );
+        newWrapper.find("input, select").on("change keypress", updateSearchString);
+
+        // Provide initial values if given
+        const select = newWrapper.find(".ecl-filter-operator");
+        if (operator) {
+            select.val(select.find(`option[data-long-value=${operator}]`)[0].value);
+        }
+        newWrapper.find(".ecl-filter-code").val(code || "");
+        newWrapper.find(".ecl-filter-label").val(label || "");
+
+        // Apply DOM changes
+        button
+            .hide()
+            .after($("<div></div>").addClass("ecl-filter-btn-placeholder"));
+        newWrapper.insertAfter(lastWrapper);
+        $("select").not(".disabled").not(".browser-default").each(function() {
+            M.FormSelect.init(this, {});
+        });
+
+        // Scroll if the new elements are outside the view
+        const docViewTop = $(window).scrollTop();
+        const docViewBottom = docViewTop + $(window).height();
+        const elemTop = newWrapper.offset().top;
+        const elemBottom = elemTop + newWrapper.height();
+        if (elemBottom > docViewBottom) {
+            $("html,body").animate({scrollTop: docViewTop + (elemBottom - docViewBottom)}, 500);
+        }
+    };
+
+    /**
+     * Remove the filter fields linked to the target button.
+     *
+     * @param evt
+     */
+    const removeFilterFields = (evt) => {
+        $(evt.target).parents(".ecl-filter-wrapper").remove();
+        const lastWrapper = $(".ecl-filter-wrapper:last-child");
+        lastWrapper.find(".ecl-filter-add").show();
+        lastWrapper.find(".ecl-filter-btn-placeholder").remove();
+        updateSearchString();
+    };
+
+    /**
+     * Set the filter fields to exactly match the given list.
+     * Each item in the list must be an object with the attributes:
+     * - op: Long name of the operator (e.g. `"childOf"`)
+     * - code: SNOMED CT code
+     * - label: (Optional) Label corresponding to the `code`.
+     *
+     * @param filters
+     */
+    const setFilterFields = (filters) => {
+        // Remove all the previous
+        $(".ecl-filter-wrapper:not(:last-child)").remove();
+
+        // Set the first filter
+        const firstWrapper = $(".ecl-filter-wrapper:last-child");
+        const select = firstWrapper.find(".ecl-filter-operator");
+        select.val(select.find(`option[data-long-value=${filters[0].op}]`)[0].value);
+        M.FormSelect.init(select[0], {});
+        firstWrapper.find(".ecl-filter-code").val(filters[0].code || "");
+        firstWrapper.find(".ecl-filter-label").val(filters[0].label || "");
+
+        // Add the remaining filters
+        for (let i = 1; i < filters.length; i++) {
+            addFilterFields(filters[i].op, filters[i].code, filters[i].label);
+        }
+
+        // Update search
+        updateSearchString();
+    }
+
+    eclFields.on("change keypress", updateSearchString);
+    eclAddBtn.click(() => { addFilterFields(); });
+
+    subscribe(
+        eclSearchField,
+        (searchToken, field) => {
+            context.eclSearch.offset = 0;
+            search(searchToken, field);
+        },
+        1);
 }
 
 $(() => {

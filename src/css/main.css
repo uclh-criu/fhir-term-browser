@@ -6,8 +6,12 @@
  * 2020
  */
 
+main {
+    padding-bottom: 50px;
+}
+
  /* UCLH colours */
-uclh-primary{background-color:#007b85 !important}.uclh-primary-text{color:#007b85 !important}.uclh-secondary{background-color:#acdcd4 !important}.btn.uclh-secondary{color:rgba(0,83,94,0.9) !important}.btn.uclh-secondary:focus,.btn.uclh-secondary:hover{background-color:#8bd4c7 !important}.uclh-muted-dark-jade{background-color:#00535e !important}.uclh-muted-dark-jade-text{color:#00535e !important}.uclh-muted-light-green{background-color:#a9c398 !important}.uclh-muted-dark-green{background-color:#629080 !important}.uclh-warm-red{background-color:#ee3124 !important}.uclh-warm-red-text{color:#ee3124 !important}.btn.uclh-warm-red{color:white;background-color:rgba(238,49,36,0.9) !important}.btn.uclh-warm-red:focus,.btn.uclh-warm-red:hover{background-color:#ee3124 !important}.btn-flat.secondary.uclh-warm-red{color:#ee3124 !important;background-color:transparent !important}.btn-flat.secondary.uclh-warm-red:focus,.btn-flat.secondary.uclh-warm-red:hover{background-color:rgba(238,49,36,0.2) !important}.uclh-warm-orange{background-color:#f8971d !important}.uclh-warm-yellow{background-color:#fff200 !important}.uclh-cool-light-blue{background-color:#00afdb !important}.uclh-cool-blue{background-color:#0093d0 !important}.uclh-cool-dark-blue{background-color:#00539b !important}.uclh-cool-green{background-color:#00a94f !important}
+.uclh-primary{background-color:#007b85 !important}.uclh-primary-text{color:#007b85 !important}.uclh-secondary{background-color:#acdcd4 !important}.btn.uclh-secondary{color:rgba(0,83,94,0.9) !important}.btn.uclh-secondary:focus,.btn.uclh-secondary:hover{background-color:#8bd4c7 !important}.uclh-muted-dark-jade{background-color:#00535e !important}.uclh-muted-dark-jade-text{color:#00535e !important}.uclh-muted-light-green{background-color:#a9c398 !important}.uclh-muted-dark-green{background-color:#629080 !important}.uclh-warm-red{background-color:#ee3124 !important}.uclh-warm-red-text{color:#ee3124 !important}.btn.uclh-warm-red{color:white;background-color:rgba(238,49,36,0.9) !important}.btn.uclh-warm-red:focus,.btn.uclh-warm-red:hover{background-color:#ee3124 !important}.btn-flat.secondary.uclh-warm-red{color:#ee3124 !important;background-color:transparent !important}.btn-flat.secondary.uclh-warm-red:focus,.btn-flat.secondary.uclh-warm-red:hover{background-color:rgba(238,49,36,0.2) !important}.uclh-warm-orange{background-color:#f8971d !important}.uclh-warm-yellow{background-color:#fff200 !important}.uclh-cool-light-blue{background-color:#00afdb !important}.uclh-cool-blue{background-color:#0093d0 !important}.uclh-cool-dark-blue{background-color:#00539b !important}.uclh-cool-green{background-color:#00a94f !important}
 
 /* Error block */
 #error-container {
@@ -30,25 +34,8 @@ uclh-primary{background-color:#007b85 !important}.uclh-primary-text{color:#007b8
     animation-fill-mode: both;
 }
 
-/* Result item that can be actioned */
-.collection {
-    overflow: visible;
-}
 
-.collection-item {}
-
-.collection-item.clickable {
-    transition: all .3s ease, margin .2s ease;
-}
-
-.collection-item.clickable:hover {
-    cursor: pointer;
-    transform: scale(1.02);
-    margin-bottom: 2px;
-    box-shadow:
-        #DDDDDD 0 0 4px 1px,
-        #E0E0E0 0 0 0 1px;
-}
+/* Generic styles for collections */
 
 .collection-item .name {
     font-weight: bold;
@@ -69,20 +56,80 @@ uclh-primary{background-color:#007b85 !important}.uclh-primary-text{color:#007b8
     background: #999999;
 }
 
+
+/* Result item that can be clicked */
+
+.clickable-results .collection {
+    overflow: visible;
+}
+
+.clickable-results .collection-item.clickable {
+    transition: all .3s ease, margin .2s ease;
+}
+
+.clickable-results .collection-item.clickable:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+    margin-bottom: 2px;
+    box-shadow:
+        #DDDDDD 0 0 4px 1px,
+        #E0E0E0 0 0 0 1px;
+}
+
+
+/* Styles for results shown in pages */
+
+.paged-results .page-info {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-column-gap: 20px;
+}
+
+.pagination li {
+    min-width: 40px;
+    transition: background .5s ease;
+}
+
+.pagination li:first-child a,
+.pagination li:last-child a {
+    padding: 0 4px 0 5px;
+}
+
+.pagination li:not(.disabled):hover {
+    background: #acdcd4 /* UCLH SECONDARY */;
+}
+
+.pagination li.active a {
+    color: white;
+}
+
+
 /* Styles linked to ECL filters and results */
+
 .ecl-filter-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 2fr auto;
     grid-column-gap: 10px;
 }
 
-.ecl-filter-add {
+.ecl-filter-add,
+.ecl-filter-remove {
     margin-bottom: -25px;
+    font-weight: bold;
+}
+
+.ecl-filter-remove {
+    margin-right: 10px;
+}
+
+.ecl-filter-btn-placeholder {
+    width: 90px;
 }
 
 #ecl-filters-results .collection-item {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
+    grid-column-gap: 5px;
 }
 
 .ecl-concept-name,
@@ -91,8 +138,15 @@ uclh-primary{background-color:#007b85 !important}.uclh-primary-text{color:#007b8
     grid-column: 1;
 }
 
-.ecl-concept-btn {
+.ecl-concept-parents-btn {
     grid-column: 2;
+    grid-row: 1/4;
+    display: flex;
+    align-items: center;
+}
+
+.ecl-concept-children-btn {
+    grid-column: 3;
     grid-row: 1/4;
     display: flex;
     align-items: center;
