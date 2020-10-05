@@ -69,4 +69,8 @@ $(function() {
     //     updateTabIndicatorTop($(".tabs .tab > a.active").parent(".tab"));
     // });
     // updateTabIndicatorTop($(".tabs .tab > a.active").parent(".tab"));
+
+    // Initialise ScrollSpy to navigate through page sections
+    // var scrollSpies = document.querySelectorAll(".scrollspy");
+    // M.ScrollSpy.init(scrollSpies, {});
 });

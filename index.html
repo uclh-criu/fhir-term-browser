@@ -8,18 +8,18 @@
 
   <title>FHIR Terminology Browser</title>
 
-  <link rel="icon" href="src/img/favicon/touch-icon-iphone.png" />
-  <link rel="apple-touch-icon" href="src/img/favicon/touch-icon-iphone.png" />
-  <link rel="apple-touch-icon" sizes="76x76" href="src/img/favicon/touch-icon-ipad.png" />
-  <link rel="apple-touch-icon" sizes="120x120" href="src/img/favicon/touch-icon-iphone-retina.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="src/img/favicon/touch-icon-ipad-retina.png" />
+  <link rel="icon" href="assets/img/favicon/touch-icon-iphone.png" />
+  <link rel="apple-touch-icon" href="assets/img/favicon/touch-icon-iphone.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon/touch-icon-ipad.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon/touch-icon-iphone-retina.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon/touch-icon-ipad-retina.png" />
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="src/materialize-v1.0.0/materialize.css" rel="stylesheet">
-  <link href="src/css/material-theme.css" rel="stylesheet">
-  <link rel="stylesheet" href="src/css/main.css" />
+  <link href="lib/materialize-v1.0.0/materialize.css" rel="stylesheet">
+  <link href="assets/css/material-theme.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css" />
 
-  <script src="src/jquery-v3.4.1/jquery-3.4.1.min.js"></script>
+  <script src="lib/jquery-v3.4.1/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
@@ -36,8 +36,15 @@
 
       <pre id="error-container" class="left-align uclh-warm-red-text"></pre>
 
+      <ul id="navigator">
+        <li><a href="#code-systems-container">Code systems</a></li>
+        <li><a href="#value-sets-container">Value sets</a></li>
+        <li><a href="#concepts-container">Concept search</a></li>
+        <li><a href="#ecl-filters-container">ECL search</a></li>
+      </ul>
+
       <!-- Code Systems -->
-      <div id="code-systems-container">
+      <div id="code-systems-container" class="section scrollspy">
         <h3 class="center orange-text">Code systems</h3>
         <p>
           Write the name, part of the description or URL of the Code System and hit [Enter]
@@ -53,8 +60,7 @@
       </div>
 
       <!-- Value Sets -->
-      <div id="value-sets-container">
-        <br>
+      <div id="value-sets-container" class="section scrollspy">
         <h3 class="center orange-text">Value sets</h3>
         <p>
           Write the name, part of the description or URL of the Value Set and hit [Enter]
@@ -70,8 +76,7 @@
       </div>
 
       <!-- Concepts search with basic filter -->
-      <div id="concepts-container">
-        <br>
+      <div id="concepts-container" class="section scrollspy">
         <h3 class="center orange-text">Concepts</h3>
         <p>
           Write an approximate name for the Concept and hit [Enter] to search the server.
@@ -88,8 +93,7 @@
       </div>
 
       <!-- Concepts search with advanced SNOMED CT ECL -->
-      <div id="ecl-filters-container">
-        <br>
+      <div id="ecl-filters-container" class="section scrollspy">
         <h3 id="ecl-filters-title" class="center orange-text">Concepts via ECL</h3>
         <p>
           Write a correct ECL and hit [Enter] to search the server, or use the fields below.
@@ -140,9 +144,9 @@
   </main>
   <footer></footer>
 
-  <script src="src/materialize-v1.0.0/materialize.js"></script>
-  <script src="src/js/init.js"></script>
-  <script src="src/js/main.js"></script>
+  <script src="lib/materialize-v1.0.0/materialize.js"></script>
+  <script src="src/init.js"></script>
+  <script src="src/main.js"></script>
 </body>
 
 </html>

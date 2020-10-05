@@ -15,11 +15,15 @@ const context = {
     concept: null,
     conceptSearch: {
         count: 100,
-        offset: 0
+        offset: 0,
+		activeOnly: true,
+		includeDesignations: true
     },
     eclSearch: {
         count: 100,
-        offset: 0
+        offset: 0,
+		activeOnly: true,
+		includeDesignations: true
     }
 };
 
@@ -448,7 +452,8 @@ function handleConcept() {
                     filter: value,
                     offset: context.conceptSearch.offset,
                     count: context.conceptSearch.count,
-                    activeOnly: context.conceptSearch.activeOnly
+                    activeOnly: context.conceptSearch.activeOnly,
+                    includeDesignations: context.conceptSearch.includeDesignations
                 }).then((response) => {
                     return {
                         results: response.expansion.contains || [],
@@ -468,6 +473,15 @@ function handleConcept() {
                         $("<div></div>")
                             .html(concept.code)
                             .addClass("description"),
+                        $("<div></div>")
+                            .html(() => {
+								const synonyms = $("<div></div>");
+								concept.designation.forEach((desig) => {
+									synonyms.append($("<div></div>").html(desig.value));
+								});
+								return synonyms.html();
+							})
+                            .addClass("synonyms"),
                         $("<div></div>").html($("<span></span>")
                             .attr({"data-badge-caption": concept.system})
                             .addClass("new badge"))
@@ -534,10 +548,11 @@ function handleECLFilter() {
                     url: url,
                     offset: context.eclSearch.offset,
                     count: context.eclSearch.count,
-                    activeOnly: context.eclSearch.activeOnly
+                    activeOnly: context.eclSearch.activeOnly,
+                    includeDesignations: context.eclSearch.includeDesignations
                 }).then((response) => {
                     // Focus the results
-                    $('html,body').animate({scrollTop: $("#ecl-filters-title").offset().top}, 1000);
+                    $("html,body").animate({scrollTop: $("#ecl-filters-title").offset().top}, 1000);
 
                     // Return a simplified response
                     return {
@@ -550,7 +565,7 @@ function handleECLFilter() {
             },
             (concept) => {
                 // DOM elements to display the concept
-                const conceptDOM = $("<div></div>")
+				const conceptDOM = $("<div></div>")
                     .addClass("collection-item")
                     .append(
                         $("<div></div>")
@@ -559,6 +574,15 @@ function handleECLFilter() {
                         $("<div></div>")
                             .html(concept.code)
                             .addClass("description ecl-concept-description"),
+                        $("<div></div>")
+                            .html(() => {
+								const synonyms = $("<div></div>");
+								concept.designation.forEach((desig) => {
+									synonyms.append($("<div></div>").html(desig.value));
+								});
+								return synonyms.html();
+							})
+                            .addClass("synonyms ecl-concept-synonyms"),
                         $("<div></div>")
                             .html($("<span></span>")
                                 .attr({"data-badge-caption": concept.system})
@@ -757,9 +781,35 @@ function handleECLFilter() {
         1);
 }
 
+/**
+ * Configures the navigation menu, to smoothly scroll to the targets.
+ */
+function handleNavigation() {
+    $("#navigator li a").click((evt) => {
+        // evt.preventDefault();
+        const urlParts = evt.target.href.split("#");
+        if (urlParts.length === 2) {
+            $("html,body").animate({scrollTop: $("#" + urlParts[1]).offset().top}, 400, function() {
+                // When the animation finishes the active element is updated
+                $("#navigator li.active").removeClass("active");
+                $(evt.target).parents("li").addClass("active");
+            });
+        }
+    });
+
+    // The current active element is detected from the page URL
+    const urlParts = document.location.href.split("#");
+    if (urlParts.length === 2) {
+        $("#navigator li.active").removeClass("active");
+        $(`a[href=\\#${urlParts[1]}]`).parents("li").addClass("active");
+    }
+}
+
+
 $(() => {
     handleCodeSystem();
     handleValueSet();
     handleConcept();
     handleECLFilter();
+    handleNavigation();
 });

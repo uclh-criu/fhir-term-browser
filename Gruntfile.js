@@ -3,7 +3,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         js_src: 'src/js',
-        css_src: 'src/css',
+        css_src: 'assets/css',
 
         watch: {
             options: {

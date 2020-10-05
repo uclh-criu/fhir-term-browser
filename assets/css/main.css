@@ -20,6 +20,44 @@ main {
     background: #FDFDFD;
 }
 
+/* Page navigator */
+#navigator {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    margin: 0;
+}
+
+#navigator li {
+    position: relative;
+    margin-bottom: 5px;
+    padding: 2px 10px;
+    border-left: 2px solid transparent;
+    transition: border-color .2s ease;
+    /*background-color: #007B85 !* PRIMARY:UCLH JADE GREEN *!;*/
+}
+
+#navigator li.active {
+    font-weight: 600;
+    border-left: 3px solid #007B85 /* PRIMARY:UCLH JADE GREEN */;
+}
+
+#navigator li:not(.active):hover {
+    /*background-color: #ACDCD4 !* SECONDARY:UCLH PALE JADE *!;*/
+    border-left-color: #ACDCD4 /* SECONDARY:UCLH PALE JADE */;
+}
+
+#navigator li a {
+    /*color: white;*/
+    color: #007B85 /* PRIMARY:UCLH JADE GREEN */;
+    transition: font-weight .2s ease;
+}
+
+#navigator li:hover a {
+    /*color: #007B85 !* PRIMARY:UCLH JADE GREEN *!;*/
+}
+
+
 /* Rotating arrows */
 @keyframes infinite-rotation {
     0% { transform: rotate(0deg); }
@@ -37,6 +75,10 @@ main {
 
 /* Generic styles for collections */
 
+.collection-item {
+    display: grid;
+}
+
 .collection-item .name {
     font-weight: bold;
     overflow: hidden;
@@ -45,6 +87,16 @@ main {
 
 .collection-item .description {
     overflow: auto;
+}
+
+.collection-item .synonyms > * {
+	float: left;
+	margin-top: 2px;
+	padding: 0 5px;
+    font-size: 0.8rem;
+	background: #EEEEEE;
+	border-radius: 2px;
+	clear: both;
 }
 
 .collection-item .badge {
@@ -130,12 +182,6 @@ main {
     display: grid;
     grid-template-columns: 1fr auto auto;
     grid-column-gap: 5px;
-}
-
-.ecl-concept-name,
-.ecl-concept-description,
-.ecl-concept-system {
-    grid-column: 1;
 }
 
 .ecl-concept-parents-btn {
