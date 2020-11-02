@@ -26,6 +26,8 @@ main {
     top: 80px;
     right: 20px;
     margin: 0;
+	background: rgba(255, 255, 255, 0.9);
+	z-index: 1;
 }
 
 #navigator li {
