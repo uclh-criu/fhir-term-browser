@@ -18,8 +18,9 @@
   },
   "homepage": "https://github.com/ucl-criu/term-browser#readme",
   "devDependencies": {
+    "path-parse": "^1.0.7",
     "grunt": "^1.3.0",
-    "grunt-contrib-watch": "^1.1.0"
+    "grunt-contrib-watch": "^1.1.0",
   },
   "dependencies": {}
 }
