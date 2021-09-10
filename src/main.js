@@ -475,12 +475,12 @@ function handleConcept() {
                             .addClass("description"),
                         $("<div></div>")
                             .html(() => {
-								const synonyms = $("<div></div>");
-								concept.designation.forEach((desig) => {
-									synonyms.append($("<div></div>").html(desig.value));
-								});
-								return synonyms.html();
-							})
+                                const synonyms = $("<div></div>");
+                                concept.designation.forEach((desig) => {
+                                    synonyms.append($("<div></div>").html(desig.value));
+                                });
+                                return synonyms.html();
+                            })
                             .addClass("synonyms"),
                         $("<div></div>").html($("<span></span>")
                             .attr({"data-badge-caption": concept.system})
@@ -576,12 +576,12 @@ function handleECLFilter() {
                             .addClass("description ecl-concept-description"),
                         $("<div></div>")
                             .html(() => {
-								const synonyms = $("<div></div>");
-								concept.designation.forEach((desig) => {
-									synonyms.append($("<div></div>").html(desig.value));
-								});
-								return synonyms.html();
-							})
+                                const synonyms = $("<div></div>");
+                                concept.designation.forEach((desig) => {
+                                    synonyms.append($("<div></div>").html(desig.value));
+                                });
+                                return synonyms.html();
+                            })
                             .addClass("synonyms ecl-concept-synonyms"),
                         $("<div></div>")
                             .html($("<span></span>")
