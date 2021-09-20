@@ -19,7 +19,8 @@
   "homepage": "https://github.com/ucl-criu/term-browser#readme",
   "devDependencies": {
     "grunt": "^1.4.1",
-    "grunt-contrib-watch": "^1.1.0"
+    "grunt-contrib-watch": "^1.1.0",
+    "set-value": "^4.0.1"
   },
   "dependencies": {}
 }
