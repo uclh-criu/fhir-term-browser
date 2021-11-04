@@ -7,7 +7,8 @@
  * 2020
  */
 
-const BASE_API_URI = "https://ontoserver.dataproducts.nhs.uk/fhir/";
+//const DEFAULT_BASE_API_URI = "https://ontoserver.dataproducts.nhs.uk/fhir/";
+const DEFAULT_BASE_API_URI = "https://r4.ontoserver.csiro.au/fhir/";
 const context = {
     latestSearchToken: null,
     codeSystem: null,
@@ -28,6 +29,20 @@ const context = {
 };
 
 /**
+ * Return current value in base URI input.
+ *
+ * @returns {string}
+ */
+function readBaseURI() {
+    let uri = $("#base-uri").val();
+    if (!uri) {
+        uri = DEFAULT_BASE_API_URI;
+        $("#base-uri").val(uri);
+    }
+    return uri;
+}
+
+/**
  * Send a query to the API and return a `Promise` that handles the response.
  *
  * @param operation
@@ -37,7 +52,7 @@ const context = {
  function query(operation, params) {
     return new Promise((resolve, reject) => {
         const queryData = {
-            url: BASE_API_URI + operation,
+            url: readBaseURI() + operation,
             method: "GET",
             data: params,
             contentType: "text/plain",
